@@ -18,57 +18,57 @@ import org.springframework.test.web.servlet.MockMvc;
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTests {
 
-  @InjectMocks
-  private ProductService productService;
+    @InjectMocks
+    private ProductService productService;
 
-  @Mock
-  private ProductRepository productRepository;
+    @Mock
+    private ProductRepository productRepository;
 
-  private long existingId;
-  private long notExistingId;
-  private long dependentId;
+    private long existingId;
+    private long notExistingId;
+    private long dependentId;
 
-  @BeforeEach
-  void variableInitialization() {
+    @BeforeEach
+    void variableInitialization() {
 
-    existingId = 1l;
-    notExistingId = 1000l;
-    dependentId = 4l;
+        existingId = 1l;
+        notExistingId = 1000l;
+        dependentId = 4l;
 
-    Mockito.doNothing().when(productRepository).deleteById(existingId);
-    Mockito.doThrow(EmptyResultDataAccessException.class).when(productRepository).deleteById(notExistingId);
-    Mockito.doThrow(DataIntegrityViolationException.class).when(productRepository).deleteById(dependentId);
-  }
+        Mockito.doNothing().when(productRepository).deleteById(existingId);
+        Mockito.doThrow(EmptyResultDataAccessException.class).when(productRepository).deleteById(notExistingId);
+        Mockito.doThrow(DataIntegrityViolationException.class).when(productRepository).deleteById(dependentId);
+    }
 
-  @Test
-  public void givenDeleteShouldThrowDataIntegrityViolationExceptionWhenIdNotExists() {
+    @Test
+    public void givenDeleteShouldThrowDataIntegrityViolationExceptionWhenIdNotExists() {
 
-    Assertions.assertThrows(DatabaseException.class, () -> {
-      productService.delete(dependentId);
-    });
+        Assertions.assertThrows(DatabaseException.class, () -> {
+            productService.delete(dependentId);
+        });
 
-    Mockito.verify(productRepository).deleteById(dependentId);
-  }
+        Mockito.verify(productRepository).deleteById(dependentId);
+    }
 
-  @Test
-  public void givenDeleteShouldThrowEmptyResultDataAccessExceptionWhenIdNotExists() {
+    @Test
+    public void givenDeleteShouldThrowEmptyResultDataAccessExceptionWhenIdNotExists() {
 
-    Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-      productService.delete(notExistingId);
-    });
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            productService.delete(notExistingId);
+        });
 
-    Mockito.verify(productRepository).deleteById(notExistingId);
-  }
+        Mockito.verify(productRepository).deleteById(notExistingId);
+    }
 
-  @Test
-  public void givenDeleteShouldDoNothingWhenIdExists() {
+    @Test
+    public void givenDeleteShouldDoNothingWhenIdExists() {
 
-    Assertions.assertDoesNotThrow(() -> {
-      productService.delete(existingId);
-    });
+        Assertions.assertDoesNotThrow(() -> {
+            productService.delete(existingId);
+        });
 
-    Mockito.verify(productRepository).deleteById(existingId);
-  }
+        Mockito.verify(productRepository).deleteById(existingId);
+    }
 
 
 }
