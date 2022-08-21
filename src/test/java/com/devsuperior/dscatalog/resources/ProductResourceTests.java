@@ -48,7 +48,7 @@ public class ProductResourceTests {
 	private Long dependentId;
 	private ProductDTO productDTO;
 	private PageImpl<ProductDTO> page;
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
 		
