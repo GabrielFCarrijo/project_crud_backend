@@ -46,7 +46,6 @@ public class ProductResourceTests {
 
         when(productService.findById(idExist)).thenReturn(productDTO);
         when(productService.findById(idNotExist)).thenThrow(ResourceNotFoundException.class);
-
     }
 
     @Test
